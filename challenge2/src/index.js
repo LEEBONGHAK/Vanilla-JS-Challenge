@@ -1,7 +1,3 @@
-// <⚠️ DONT DELETE THIS ⚠️>
-import "./styles.css";
-// <⚠️ /DONT DELETE THIS ⚠️>
-
 const body = document.querySelector("body");
 
 const INITIAL_COLOR = "#eebc12";
