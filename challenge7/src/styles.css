@@ -1,0 +1,58 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  height: 100vh;
+}
+
+input {
+  outline: none;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.num,
+.equal,
+.symbol,
+.C,
+.zero {
+  color: white;
+  font-size: 20px;
+  width: 160px;
+  height: 65px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  background-color: #363439;
+}
+
+.zero {
+  width: 330px;
+}
+
+.symbol {
+  background-color: #fe8e00;
+}
+
+.C {
+  background-color: #aaa9b1;
+}
+
+.result {
+  box-sizing: border-box;
+  color: white;
+  font-size: 30px;
+  width: 500px;
+  height: 65px;
+  border-radius: 15px;
+  padding: 0px 15px;
+  text-align: right;
+}
