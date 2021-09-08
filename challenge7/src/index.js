@@ -1,118 +1,85 @@
-const result = document.querySelector(".result"),
-  nums = document.querySelectorAll(".num"),
-  C = document.querySelector(".C"),
-  equal = document.querySelector(".equal"),
-  symbols = document.querySelectorAll(".symbol");
+import "./styles.css";
 
-let inputValue = "0";
-let anotherInput = "";
-let resultValue = 0;
+const result = document.querySelector(".js-result");
+const reset = document.querySelector(".js-reset");
+const equals = document.querySelector(".js-equals");
+const numbers = Array.from(document.querySelectorAll(".js-number"));
+const operations = Array.from(document.querySelectorAll(".js-operation"));
+
+let firstValue = "",
+  firstDone,
+  secondValue = "",
+  secondDone,
+  currentOperation;
+
+function doOperation() {
+  const intValueA = parseInt(firstValue, 10);
+  const intValueB = parseInt(secondValue, 10);
+  switch (currentOperation) {
+    case "+":
+      return intValueA + intValueB;
+    case "-":
+      return intValueA - intValueB;
+    case "/":
+      return intValueA / intValueB;
+    case "*":
+      return intValueA * intValueB;
+    default:
+      return;
+  }
+}
+
+function handleNumberClick(e) {
+  const clickedNum = e.target.innerText;
+  if (!firstDone) {
+    firstValue = firstValue + clickedNum;
+    result.innerHTML = firstValue;
+  } else {
+    secondValue = secondValue + clickedNum;
+    result.innerHTML = secondValue;
+    secondDone = true;
+  }
+}
+
+function calculate() {
+  const operation = doOperation();
+  result.innerHTML = operation;
+  firstValue = operation;
+  secondDone = false;
+  secondValue = "";
+}
+
+function handleOperationClick(e) {
+  const clickedOperation = e.target.innerText;
+  if (!firstDone) {
+    firstDone = true;
+  }
+  if (firstDone && secondDone) {
+    calculate();
+  }
+  currentOperation = clickedOperation;
+}
 
 function handleReset() {
-  result.value = "0";
-  inputValue = "0";
-  anotherInput = "";
-  resultValue = 0;
-  nums.forEach(function (numClick) {
-    numClick.removeEventListener("click", plus);
-    numClick.removeEventListener("click", minus);
-    numClick.removeEventListener("click", multiply);
-    numClick.removeEventListener("click", division);
-  });
-  init();
+  firstValue = "";
+  secondValue = "";
+  firstDone = false;
+  secondDone = false;
+  currentOperation = null;
+  result.innerHTML = "0";
 }
 
-function handleNumInput(event) {
-  const inputNum = event.target.value;
-  if (result.value === "0") {
-    result.value = "";
-  }
-  result.value += inputNum;
-  inputValue = result.value;
-  console.log(inputValue);
-}
-
-function plus(event) {
-  const inputNum = event.target.value;
-  if (result.value !== "") {
-    result.value = "";
-  }
-  anotherInput += inputNum;
-  result.value = anotherInput;
-  console.log(anotherInput);
-  resultValue = Number(inputValue) + Number(anotherInput);
-  inputValue = resultValue.toString();
-}
-
-function minus(event) {
-  const inputNum = event.target.value;
-  anotherInput += inputNum;
-  result.value = anotherInput;
-  resultValue = Number(inputValue) - Number(anotherInput);
-  inputValue = resultValue.toString();
-}
-
-function multiply(event) {
-  const inputNum = event.target.value;
-  anotherInput += inputNum;
-  result.value = anotherInput;
-  resultValue = Number(inputValue) * Number(anotherInput);
-  inputValue = resultValue.toString();
-}
-
-function division(event) {
-  const inputNum = event.target.value;
-  anotherInput += inputNum;
-  result.value = anotherInput;
-  resultValue = Number(inputValue) / Number(anotherInput);
-  inputValue = resultValue.toString();
-}
-
-function afterInput(selectedSymbol) {
-  if (selectedSymbol === "+") {
-    nums.forEach(function (numClick) {
-      numClick.addEventListener("click", plus);
-    });
-  } else if (selectedSymbol === "-") {
-    nums.forEach(function (numClick) {
-      numClick.addEventListener("click", minus);
-    });
-  } else if (selectedSymbol === "*") {
-    nums.forEach(function (numClick) {
-      numClick.addEventListener("click", multiply);
-    });
-  } else {
-    nums.forEach(function (numClick) {
-      numClick.addEventListener("click", division);
-    });
+function handleEqualsClick() {
+  if (firstDone && secondDone) {
+    calculate();
   }
 }
 
-function handleSymbolClick(event) {
-  const selectedSymbol = event.target.value;
-  result.value = inputValue;
-  nums.forEach(function (numClick) {
-    numClick.removeEventListener("click", handleNumInput);
-  });
-  anotherInput = "";
-  afterInput(selectedSymbol);
-}
-
-function displayResult() {
-  result.value = inputValue;
-  inputValue = "0";
-  anotherInput = "";
-}
-
-function init() {
-  nums.forEach(function (numClick) {
-    numClick.addEventListener("click", handleNumInput);
-  });
-  symbols.forEach(function (symbolClick) {
-    symbolClick.addEventListener("click", handleSymbolClick);
-  });
-  equal.addEventListener("click", displayResult);
-  C.addEventListener("click", handleReset);
-}
-
-init();
+numbers.forEach(function (number) {
+  number.addEventListener("click", handleNumberClick);
+});
+operations.forEach(function (operation) {
+  operation.addEventListener("click", handleOperationClick);
+});
+reset.addEventListener("click", handleReset);
+equals.addEventListener("click", handleEqualsClick);
